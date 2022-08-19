@@ -1,0 +1,38 @@
+.buttons button:disabled {
+
+    border-color: black;
+}
+
+.buttons button.false {
+
+    background-color: grey;
+    color: black;
+}
+
+.buttons button.true {
+
+    background-color: green;
+    color: black;
+}
+
+.buttons button.selected {
+
+    border-radius: 15px;
+}
+
+.buttons button.selected.false {
+
+    background-color: red;
+    color: white;
+}
+
+.buttons button.selected.true {
+
+    background-color: green;
+    color: white;
+}
+
+#next {
+
+    margin-top: 10px;
+}

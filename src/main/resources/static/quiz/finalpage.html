@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/common/normalize.css">
+    <link rel="stylesheet" href="/common/structure.css">
+    <link rel="stylesheet" href="/quiz/finalpage.css">
+    <title>Quiz Results</title>
+    <script defer src="/my_scripts/main_scripts/finalpage.dart.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>QUIZBUZZ</h1>
+        <h3>Quiz complete!</h3>
+    </header>
+
+    <nav class="top_nav">
+        <a href="/home" id="esci">EXIT</a>
+    </nav>
+
+    <main>
+        <div id="result-box">
+            <h3>Total Score:</h3>
+            <h2 id="score"></h2>
+            <div id="cards"></div>
+        </div>
+    </main>
+    <nav id="bottom_nav">
+        <button class="my_buttons" type="button" id="retry">Retry</button>
+        <div id="result_div">
+            <div class="tooltip">
+                <span class="tooltiptext">The name is too long!</span>
+                <input type="text" id="username_input" class="result_manager" placeholder="Inserire Username" required>
+            </div>
+
+            <button class="my_buttons result_manager" type="button" id="send_result" disabled>Send results</button>
+        </div>
+    </nav>
+
+</body>
+
+</html>

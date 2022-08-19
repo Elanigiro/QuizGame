@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/common/normalize.css">
+    <link rel="stylesheet" href="/common/structure.css">
+    <link rel="stylesheet" href="/common/quiz-common.css">
+    <link rel="stylesheet" href="/common/quizresult.css">
+    <link rel="stylesheet" href="/quiz/quiz.css">
+    <title>QuizBuzz</title>
+    <script defer src="/my_scripts/main_scripts/quiz.dart.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Question <span id="question_count"></span></h1>
+    </header>
+
+    <nav>
+        <a href="/home" id="esci">EXIT</a>
+    </nav>
+
+    <article id="question-box">
+        <h2 id="question"></h2>
+        <h3 id="question_src"></h3>
+
+        <div class="answers">
+            <ol type="A" class="answers_list">
+            </ol>
+        </div>
+
+        <div class="buttons"></div>
+    </article>
+
+    <footer>
+        <div id="next"></div>
+        <div id="send_results"></div>
+    </footer>
+</body>
+
+</html>

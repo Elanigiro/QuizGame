@@ -1,0 +1,83 @@
+.material-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    color: #F85E00;
+    border-radius: 50%;
+    background: #FFD29D;
+    position: fixed;
+
+    cursor: pointer;
+}
+
+#top_nav {
+
+    position: fixed;
+}
+
+/* Extra small devices (phones, 550px and down) */
+@media only screen and (max-width: 550px) {
+
+    #top_nav {
+
+        left: 2vw;
+        top: 1vh;
+    }
+
+    .material-icons {
+
+        font-size: 5vh;
+        height: 8vh;
+        width: 8vh;
+        padding: 0;
+        margin: 0;
+        border: 3px solid #F85E00;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 550px and up) */
+@media only screen and (min-width: 550px) {
+
+    #top_nav {
+
+        left: 8vw;
+        top: 4vh;
+    }
+
+    .material-icons {
+
+        font-size: 5vh;
+        height: 8vh;
+        width: 8vh;
+        padding: 0;
+        margin: 0;
+        border: 3px solid #F85E00;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+
+    #top_nav {
+
+        left: 8vw;
+    }
+}
+
+/* Medium-large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {}
+
+/* Large devices (laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+
+}
+
+/*Desktop*/
+@media only screen and (min-width: 1600px) {
+
+
+}

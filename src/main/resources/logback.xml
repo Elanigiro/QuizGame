@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <!-- Appender files/streams -->
+    <appender name="USR_SCORE_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>myLogs/usrScore.log</file>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>myLogs/error.log</file>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Loggers -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+    <logger name="fictional.quizfinal.payload.request.UserScoreRequest" level="DEBUG">
+        <appender-ref ref="USR_SCORE_FILE"/>
+    </logger>
+
+    <logger name="com.fasterxml.jackson.core.JsonProcessingException" level="ERROR">
+        <appender-ref ref="ERROR_FILE"/>
+    </logger>
+
+    <logger name="java.lang.Exception" level="ERROR">
+        <appender-ref ref="ERROR_FILE"/>
+    </logger>
+
+    <logger name="InputValidation" level="ERROR">
+        <appender-ref ref="ERROR_FILE"/>
+    </logger>
+
+    <logger name="java.sql.SQLException" level="ERROR">
+        <appender-ref ref="ERROR_FILE"/>
+    </logger>
+
+    <logger name="java.io.IOException" level="ERROR">
+        <appender-ref ref="ERROR_FILE"/>
+    </logger>
+
+</configuration>
