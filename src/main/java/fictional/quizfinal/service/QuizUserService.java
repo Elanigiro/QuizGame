@@ -4,11 +4,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import fictional.quizfinal.entity.QuizUser;
 import fictional.quizfinal.repository.QuizUserRepository;
 
 @Service
+@Transactional
 public class QuizUserService {
     
     @Autowired QuizUserRepository quizUserRepository;

@@ -6,12 +6,14 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import fictional.quizfinal.entity.Question;
 import fictional.quizfinal.entity.Topic;
 import fictional.quizfinal.repository.QuestionRepository;
 
 @Service
+@Transactional
 public class QuestionService {
     
     @Autowired QuestionRepository questionRepository;

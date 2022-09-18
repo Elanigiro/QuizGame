@@ -2,11 +2,13 @@ package fictional.quizfinal.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import fictional.quizfinal.entity.composite.DiffVersionId;
 import fictional.quizfinal.repository.Diff_VersionRepository;
 
 @Service
+@Transactional
 public class Diff_VersionService {
     
     @Autowired Diff_VersionRepository diff_VersionRepository;
