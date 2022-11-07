@@ -5,7 +5,7 @@ import 'dart:html';
 import 'package:http/http.dart' as http;
 import 'QuestionStatistics.dart';
 import '../payload/Question.dart';
-import '../payload/QuestionList.dart';
+import '../payload/QuestionList.js';
 import 'viewModel.dart';
 
 class HttpHandlersManager {
