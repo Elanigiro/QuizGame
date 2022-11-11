@@ -15,7 +15,7 @@ class QuestionList {
 
     /**
      * 
-     * @param {object} json 
+     * @param {Object} json 
      * @returns {QuestionList}
      */
     static fromJson(json) {

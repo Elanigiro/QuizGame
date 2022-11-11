@@ -1,4 +1,5 @@
 import { Question } from "../payload/Question";
+import { QuestionList } from "../payload/QuestionList";
 import { UserScore } from "../payload/UserScore";
 
 /**
@@ -43,9 +44,9 @@ class ClientSideREST {
 
     /**
      * @param {number} limit
-     * @returns {Promise<Question[]>}
+     * @returns {Promise<QuestionList>}
      */
-    static async fetchQuizQuestions(limit) {
+    static async fetchQuizQuestionList(limit) {
 
         if ((parseInt(limit) !== limit) || (limit <= 0)) {
 
@@ -61,7 +62,7 @@ class ClientSideREST {
 
         const responseJson = await res.json();
 
-        return responseJson.map((item) => Question.fromJson(item));
+        return QuestionList.fromJson(responseJson);
     }
 
     /**

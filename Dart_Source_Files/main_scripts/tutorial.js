@@ -1,8 +1,5 @@
 
 
-
-
-
 void main() {
   //set eventListeners
   (querySelector("#A1") as ButtonElement).onClick.listen(clickedAlertAnswer);
@@ -11,7 +8,14 @@ void main() {
   (querySelector("#A4") as ButtonElement).onClick.listen(clickedAlertAnswer);
 }
 
-
+void clickedAlertAnswer(MouseEvent me) {
+  ButtonElement selected = me.target as ButtonElement;
+  selected.classes.add("selected");
+  //disable all buttons
+  disableButtons();
+  //add true/false class to buttons
+  setButtonTruth();
+}
 
 void setButtonTruth() {
   (querySelector("#A1") as ButtonElement).classes.add("false");

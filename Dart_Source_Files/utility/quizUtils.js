@@ -1,134 +1,130 @@
-/**
- * @param {Event} e 
- */
- function clickedAnswer(e) {
-    /** @type {Element}  */
-    const selected = e.target;
-  
-    if (selected.classList.contains("quiz_button")){
-  
-      selected.classList.add("selected");
-      //disable all buttons
-      disableButtons();
-      //add true/false class to buttons
-      setButtonTruth();
-    }
+import { Question } from "../payload/Question";
+
+class QuizUtils {
+
+  static QUESTION_NO = 10;
+  static URL_FINAL = './finalpage.html';
+
+  static DIFF_MAP = new Map([
+
+    [1, 2],
+    [2, 3],
+    [3, 4],
+  ]);
+
+  static BTN_MAP = new Map([
+
+    [0, 'A'],
+    [1, 'B'],
+    [2, 'C'],
+    [3, 'D'],
+  ]);
+
+  /**
+   * @throws {Error}
+   */
+      constructor () {
+
+      throw new Error('Constructor Not Available!');
   }
 
-  function setCorrectButtons() {
-    ElementList<ButtonElement> buttonList = querySelectorAll(".quiz_button");
-    for (int i = 0; i < buttonList.length; ++i) {
-      buttonList[i].classes.add(man.currentQuestion!.answers[i].correct);
-    }
+  /**
+   * 
+   * @param {number} diff 
+   */
+  static setButtons(diff) {
+
+    [...Array(this.DIFF_MAP[diff]).keys].forEach((idx) => {
+
+      let newBtn = new HTMLButtonElement(document.createElement('btn'));
+      newBtn.id = `A${idx}`;
+      newBtn.classList = `quiz_button`;
+      newBtn.textContent = this.BTN_MAP[idx];
+      newBtn.disabled = true;
+
+      document.getElementById('quiz_buttons').append(newBtn);
+    });
   }
-  
-  void displayQuestion(HttpHandlersManager man) {
-    (querySelector("#question_count") as SpanElement).text =
-        "${man.idx + 1} / ${man.questions!.questionCodes.length}";
-    (querySelector("#question") as HeadingElement).text =
-        "\"${man.currentQuestion!.question} ...\"";
-    (querySelector("#question_src") as HeadingElement).text =
-        man.currentQuestion!.source;
-  
-    ElementList<SpanElement> answerList = querySelectorAll(".quiz_answer");
-    for (int i = 0; i < answerList.length; ++i) {
-      answerList[i].text = man.currentQuestion!.answers[i].answer;
-    }
-  
-    //resets stopwatch for the question
-    man.startTimeQuestion = DateTime.now();
+
+  /**
+   * 
+   * @param {(e: Event) => void} handler 
+   */
+  static enableQuiz(handler) {
+
+      document.getElementById('quiz_buttons').addEventListener('click', handler, {once: true, capture: true});
+      this.enableButtons();
   }
-  
-  void disableButtons() {
-    for (ButtonElement button in querySelectorAll(".quiz_button")) {
-      button.disabled = true;
-    }
+
+  static disableButtons() {
+
+      [...document.getElementsByClassName("quiz_button")].forEach((btn) => {(new HTMLButtonElement(btn)).disabled = true;});
   }
-  
-  void clearButtons() {
-    for (ButtonElement button in querySelectorAll(".quiz_button")) {
-      button
-        ..classes.retainAll(["quiz_button"])
-        ..disabled = false;
-    }
+
+  static enableButtons() {
+
+      [...document.getElementsByClassName("quiz_button")].forEach((btn) => {(new HTMLButtonElement(btn)).disabled = true;});
   }
-  
-  void addNextButton(HttpHandlersManager man) {
-    ButtonElement nextButton = ButtonElement()
-      ..text = "Next Question"
-      ..type = "button"
-      ..id = "nextButton";
-  
-    querySelector("#next")!.children.add(nextButton);
-    querySelector("#nextButton")!.onClick.listen(man.clickedNext);
+
+  static removeNextButton() {
+
+      document.getElementById('next').innerHTML = '';
   }
-  
-  void removeNextButton() {
-    querySelector("#next")!.children.clear();
+
+  static clearButtons() {
+
+    [...document.getElementsByClassName("quiz_button")].forEach((btn) => {
+
+      let currentBtn = new HTMLButtonElement(btn);
+
+      currentBtn.disabled = true;
+      currentBtn.classList = 'quiz_button';
+    });
   }
-  
-  void scoreUpdate(HttpHandlersManager man) {
-    if (querySelector(".selected.true") != null) {
-      man.totalScore += man.questions!.scorePerQuestion;
-    }
+
+  /**
+   * 
+   * @param {(e: Event) => void} handler 
+   * @param {string} id 
+   * @param {string} parentId 
+   * @param {string} txt 
+   */
+  static addButton(handler, id, parentId, txt) {
+
+    let nextButton = new HTMLButtonElement(document.createElement('btn'));
+    nextButton.textContent = txt;
+    nextButton.type = "button";
+    nextButton.id = id;
+    nextButton.addEventListener('click', handler, {once: true});
+
+    document.getElementById(parentId).append(nextButton);
   }
-  
-  void addResultsButton(HttpHandlersManager man) {
-    ButtonElement resultsButton = ButtonElement()
-      ..text = "Results"
-      ..type = "button"
-      ..id = "resButton"
-      ..onClick.listen(man.clickedResults);
-  
-    querySelector("#send_results")!.children.add(resultsButton);
+
+  /**
+   * 
+   * @param {number} counter 
+   * @param {Question} q 
+   */
+  static displayQuestion(counter, q) {
+
+    document.getElementById('question_count').textContent = `${counter} / ${this.QUESTION_NO}`;
+    document.getElementById('question').textContent = `"${q.question} ..."`;
+    document.getElementById('question_src').textContent = `${q.source}`;
+
+    [...document.getElementsByClassName('quiz_answer')].forEach((item, idx) => {
+
+      item.textContent = q.answers[idx].answer;
+    });
   }
-  
-  void pageRebuild() {
-    querySelector("body")!.children.clear();
+
+  /**
+   * 
+   * @param {number} idx 
+   */
+  static updateStats(idx) {
+
+    window.sessionStorage.setItem(`Q${idx}`, (document.querySelector('.quiz_button.selected.true'))? "correct" : "wrong");
   }
-  
-  LIElement singleListItem({required String id, required String spanClass}) {
-    SpanElement tmp = SpanElement()
-      ..id = id
-      ..classes.add(spanClass);
-    return LIElement()..children.add(tmp);
-  }
-  
-  void addAnswers(int howMany) {
-    OListElement parent = querySelector(".answers_list") as OListElement;
-  
-    for (int i = 1; i <= howMany; ++i) {
-      parent.children
-          .add(singleListItem(id: "A${i}_text", spanClass: "quiz_answer"));
-    }
-  }
-  
-  ButtonElement singleButton(
-      {required String id,
-      required String buttonClass,
-      required String content}) {
-    return ButtonElement()
-      ..id = id
-      ..classes.add(buttonClass)
-      ..type = "button"
-      ..text = content;
-  }
-  
-  void addAnswersButtons(int howMany) {
-    DivElement parent = querySelector(".buttons") as DivElement;
-  
-    for (int i = 1; (i <= howMany) && (i <= ALPHABET.length); ++i) {
-      parent.children.add(singleButton(
-          id: "A$i", buttonClass: "quiz_button", content: ALPHABET[i - 1]));
-    }
-  }
-  
-  // ignore: constant_identifier_names
-  const String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  
-  void setEventListenersButtons(HttpHandlersManager man) {
-    for (ButtonElement button in querySelectorAll(".quiz_button")) {
-      button.onClick.listen(man.clickedAnswer);
-    }
-  }
-  
+}
+
+export {QuizUtils};
