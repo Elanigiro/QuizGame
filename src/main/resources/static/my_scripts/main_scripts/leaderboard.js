@@ -1,5 +1,5 @@
-import { ClientSideREST } from "../utility/ClientSideREST";
-import { UserScore } from "../payload/UserScore";
+import { ClientSideREST } from "../utility/ClientSideREST.js";
+import { UserScore } from "../payload/UserScore.js";
 
 /**
  * 

@@ -1,7 +1,7 @@
-import { Question } from "../payload/Question";
-import { QuestionList } from "../payload/QuestionList";
-import { User } from "../payload/User";
-import { UserScore } from "../payload/UserScore";
+import { Question } from "../payload/Question.js";
+import { QuestionList } from "../payload/QuestionList.js";
+import { User } from "../payload/User.js";
+import { UserScore } from "../payload/UserScore.js";
 
 /**
  * Static class to handle all REST requests/responses to the Back-End

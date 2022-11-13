@@ -1,4 +1,4 @@
-import { Question } from "../payload/Question";
+import { Question } from "../payload/Question.js";
 
 class QuizUtils {
 
@@ -34,9 +34,9 @@ class QuizUtils {
    */
   static setButtons(diff) {
 
-    [...Array(this.DIFF_MAP[diff]).keys].forEach((idx) => {
+    [...Array(this.DIFF_MAP[diff]).keys()].forEach((idx) => {
 
-      let newBtn = new HTMLButtonElement(document.createElement('btn'));
+      let newBtn = document.createElement('btn');
       newBtn.id = `A${idx}`;
       newBtn.classList = `quiz_button`;
       newBtn.textContent = this.BTN_MAP[idx];

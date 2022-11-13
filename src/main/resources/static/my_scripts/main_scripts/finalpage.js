@@ -1,6 +1,6 @@
-import { User } from "../payload/User";
-import { UserScore } from "../payload/UserScore";
-import { ClientSideREST } from "../utility/ClientSideREST";
+import { User } from "../payload/User.js";
+import { UserScore } from "../payload/UserScore.js";
+import { ClientSideREST } from "../utility/ClientSideREST.js";
 
 function redirectIfNotAllowed() {
   if (!window.sessionStorage.getItem("game_complete")) {

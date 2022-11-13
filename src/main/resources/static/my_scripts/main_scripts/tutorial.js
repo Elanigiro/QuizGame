@@ -1,4 +1,4 @@
-import { QuizUtils } from "../utility/quizUtils";
+import { QuizUtils } from "../utility/QuizUtils.js";
 
 /**
  * @param {Event} e 

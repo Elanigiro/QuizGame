@@ -1,7 +1,7 @@
-import { Question } from "../payload/Question";
-import { QuestionList } from "../payload/QuestionList";
-import { ClientSideREST } from "../utility/ClientSideREST";
-import { QuizUtils } from "../utility/quizUtils";
+import { Question } from "../payload/Question.js";
+import { QuestionList } from "../payload/QuestionList.js";
+import { ClientSideREST } from "../utility/ClientSideREST.js";
+import { QuizUtils } from "../utility/QuizUtils.js";
 
 export class QuizManager {
 
@@ -32,7 +32,7 @@ export class QuizManager {
         .then(this.getNextQuestion)
         .then(() => {QuizUtils.displayQuestion(this.idx, this.currentQuestion);})
         .then(() => {QuizUtils.enableQuiz(this.clickedAnswer)})
-        .catch((error) => {console.error(error);});
+        .catch((error) => {console.error(`PRINT ERROR: ${error}`);});
     }
 
     /**
@@ -42,7 +42,7 @@ export class QuizManager {
 
         window.sessionStorage.clear();
         QuizUtils.setButtons(this.difficulty);
-        this.questions = await ClientSideREST.fetchQuizQuestions(QuizUtils.QUESTION_NO).questions;
+        this.questions = await ClientSideREST.fetchQuizQuestionList(QuizUtils.QUESTION_NO);
     }
 
     /**
