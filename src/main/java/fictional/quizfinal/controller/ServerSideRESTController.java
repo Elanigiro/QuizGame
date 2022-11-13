@@ -2,7 +2,6 @@ package fictional.quizfinal.controller;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -56,8 +55,8 @@ public class ServerSideRESTController {
     @Autowired DifficultyService difficultyService;
     @Autowired UserScoreService userScoreService;
 
-    // Sends question list as JSON
-    @GetMapping(path = "/quiz/questions/{topic}", params = {"limit", "random"}) 
+    // Sends question list and game version as JSON
+    @GetMapping(path = "/quiz/questions/topic/{topic}", params = {"limit", "random"}) 
     public ResponseEntity<QuestionListResponse> getQuestionList(@Valid QuestionListRequest qlr) {
 
         QuestionListResponse res = new QuestionListResponse();
@@ -73,18 +72,12 @@ public class ServerSideRESTController {
     }
 
     // Sends question as JSON
-    @GetMapping("/nextQuestion")
+    @GetMapping("/quiz/questions/{questId}")
     public ResponseEntity<Question> getQuestion(@Valid QuestionRequest qr) {
 
-        Question res = questionService.fetchQuestion(nx.getQuestId()).get();
+        Question res = questionService.fetchQuestion(qr.getQuestId()).get();
 
-        Collections.shuffle(res.getAnswers()); // it ensures random selection of wrong answers
-        answerService.selectAnswersByDifficulty(res.getAnswers(), nx.getDiff());
-        Collections.shuffle(res.getAnswers());
-
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Vary", "*"); // uncacheable resource
-        return new ResponseEntity<Question>(res, responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<Question>(res, HttpStatus.OK);
     }
 
     // Saves the quiz result into the DB if validated

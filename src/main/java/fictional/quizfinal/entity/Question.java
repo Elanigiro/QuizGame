@@ -27,7 +27,7 @@ public class Question {
     @Column(length = 100, nullable = false)
     private String source;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "question")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
     private List<Answer> answers;
     
     public Question(int idQuest, Topic topic, String question, String source, List<Answer> answers) {

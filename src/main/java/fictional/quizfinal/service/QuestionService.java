@@ -1,7 +1,6 @@
 package fictional.quizfinal.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +24,7 @@ public class QuestionService {
 
     public Optional<Question> fetchQuestion(int id) {
 
-        return questionRepository.findById(id);
+        return questionRepository.myEagerFindById(id);
     }
 
     public List<Question> fetchQuestions(Topic t, PageRequest pr) {

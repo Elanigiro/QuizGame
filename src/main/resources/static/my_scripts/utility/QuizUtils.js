@@ -1,4 +1,5 @@
 import { Question } from "../payload/Question.js";
+import { Answer } from "../payload/Answer.js";
 
 class QuizUtils {
 
@@ -34,12 +35,12 @@ class QuizUtils {
    */
   static setButtons(diff) {
 
-    [...Array(this.DIFF_MAP[diff]).keys()].forEach((idx) => {
+    [...Array(this.DIFF_MAP.get(diff)).keys()].forEach((idx) => {
 
-      let newBtn = document.createElement('btn');
+      let newBtn = document.createElement('button');
       newBtn.id = `A${idx}`;
       newBtn.classList = `quiz_button`;
-      newBtn.textContent = this.BTN_MAP[idx];
+      newBtn.textContent = this.BTN_MAP.get(idx);
       newBtn.disabled = true;
 
       document.getElementById('quiz_buttons').append(newBtn);
@@ -63,7 +64,7 @@ class QuizUtils {
 
   static enableButtons() {
 
-      [...document.getElementsByClassName("quiz_button")].forEach((btn) => {btn.disabled = true;});
+      [...document.getElementsByClassName("quiz_button")].forEach((btn) => {btn.disabled = false;});
   }
 
   static removeNextButton() {
@@ -75,11 +76,16 @@ class QuizUtils {
 
     [...document.getElementsByClassName("quiz_button")].forEach((btn) => {
 
-      let currentBtn = new HTMLButtonElement(btn);
+      let currentBtn = btn;
 
       currentBtn.disabled = true;
       currentBtn.classList = 'quiz_button';
     });
+  }
+
+  static clearAnswers() {
+
+    document.getElementById('answers_list').innerHTML = '';
   }
 
   /**
@@ -91,7 +97,7 @@ class QuizUtils {
    */
   static addButton(handler, id, parentId, txt) {
 
-    let nextButton = new HTMLButtonElement(document.createElement('btn'));
+    let nextButton = document.createElement('button');
     nextButton.textContent = txt;
     nextButton.type = "button";
     nextButton.id = id;
@@ -104,17 +110,62 @@ class QuizUtils {
    * 
    * @param {number} counter 
    * @param {Question} q 
+   * @param {number} diff
    */
-  static displayQuestion(counter, q) {
+  static displayQuestion(counter, q, diff) {
 
     document.getElementById('question_count').textContent = `${counter} / ${this.QUESTION_NO}`;
     document.getElementById('question').textContent = `"${q.question} ..."`;
     document.getElementById('question_src').textContent = `${q.source}`;
 
-    [...document.getElementsByClassName('quiz_answer')].forEach((item, idx) => {
+    this.randomizeAnswers(q.answers, this.DIFF_MAP.get(diff));
 
-      item.textContent = q.answers[idx].answer;
+    const answersList = document.getElementById('answers_list');
+    q.answers.forEach((item) => {
+
+      let newListItem = document.createElement('li');
+      newListItem.classList = "quiz_answer";
+      newListItem.textContent = item.answer;
+
+      answersList.append(newListItem);
     });
+  }
+
+  /**
+   * 
+   * @param {any[]} array 
+   */
+  static arrayShuffle(array) {
+
+    const iterations = 35;
+    
+    [...Array(iterations).keys()].forEach(() => {
+
+      let i = Math.floor(Math.random() * array.length);
+      let j = Math.floor(Math.random() * array.length);
+
+      //swap
+      [array[i], array[j]] = [array[j], array[i]];
+    });
+  }
+
+  /**
+   * @param {Answer[]} answers
+   * @param {number} howMany 
+   */
+  static randomizeAnswers(answers, howMany) {
+
+    this.arrayShuffle(answers);
+
+    for (let i = 0; (i < answers.length) && (answers.length > howMany); i++) {
+      
+      if (answers[i].correct === false) {
+
+        answers.splice(i, 1);
+      }
+    }
+
+    this.arrayShuffle(answers);
   }
 
   /**

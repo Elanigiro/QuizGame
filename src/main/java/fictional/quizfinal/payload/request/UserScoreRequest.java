@@ -58,14 +58,14 @@ public class UserScoreRequest {
         return topicService.isValidTopic(topic);
     }
 
-    @AssertTrue(message = "Invalid result", groups = ValidationStep3.class)
-    public boolean isValidResult() {
+    // @AssertTrue(message = "Invalid result", groups = ValidationStep3.class)
+    // public boolean isValidResult() {
 
-        int maxPossibleScore = QuestionListResponse.QUESTION_POOL_SIZE * (int)diff_VersionService.fetchScore(difficulty, gameVersion);
+    //     int maxPossibleScore = QuestionListResponse.QUESTION_POOL_SIZE * (int)diff_VersionService.fetchScore(difficulty, gameVersion);
 
-        // check if within valid range
-        return ((this.result >= 0) && (this.result <= maxPossibleScore));
-    }
+    //     // check if within valid range
+    //     return ((this.result >= 0) && (this.result <= maxPossibleScore));
+    // }
 
     public String getUsername() {
         return username;

@@ -23,15 +23,15 @@ export class QuizManager {
 
     constructor() {
 
-        this.difficulty = window.localStorage.getItem('diff')?? 2;
-        this.topic = window.localStorage.getItem('topic')?? 2;
+        this.difficulty = parseInt(window.localStorage.getItem('diff'))?? 2;
+        this.topic = parseInt(window.localStorage.getItem('topic'))?? 2;
         this.idx = 0;
         this.totalScore = 0;
 
         this.startUp()
         .then(() => this.getNextQuestion())
-        .then(() => {QuizUtils.displayQuestion(this.idx, this.currentQuestion);})
-        .then(() => {QuizUtils.enableQuiz(this.clickedAnswer)})
+        .then(() => {QuizUtils.displayQuestion(this.idx, this.currentQuestion, this.difficulty);})
+        .then(() => {QuizUtils.enableQuiz((e) => {this.clickedAnswer(e);})})
         .catch((error) => {console.error(error);});
     }
 
@@ -81,24 +81,24 @@ export class QuizManager {
             //disable all buttons
             QuizUtils.disableButtons();
             //add true/false class to buttons
-            setButtonTruth();
+            this.setButtonTruth();
 
             //save the result in window.sessionStorage
             QuizUtils.updateStats(this.idx);
 
             if (this.hasNext()) {
 
-                QuizUtils.addButton(this.clickedNext, 'nextButton', 'next', 'Next Question');
+                QuizUtils.addButton((e) => {this.clickedNext(e);}, 'nextButton', 'next', 'Next Question');
             }
             else {
 
-                QuizUtils.addButton(this.clickedResults, 'resButton', 'send_results', 'Results');
+                QuizUtils.addButton((e) => {this.clickedResults(e);}, 'resButton', 'send_results', 'Results');
             }
         }
         else {
 
             //I need this line in case of a click just outside of a button in order to reactivate the quiz
-            QuizUtils.enableQuiz(this.clickedAnswer);
+            QuizUtils.enableQuiz((e) => {this.clickedAnswer(e);});
         }
     }
 
@@ -121,9 +121,11 @@ export class QuizManager {
 
         QuizUtils.removeNextButton();
         QuizUtils.clearButtons();
+        QuizUtils.clearAnswers();
+        
         this.getNextQuestion()
         .then(() => {QuizUtils.displayQuestion(this.idx, this.currentQuestion);})
-        .then(() => {QuizUtils.enableQuiz(this.clickedAnswer)})
+        .then(() => {QuizUtils.enableQuiz((e) => {this.clickedAnswer(e);})})
         .catch((error) => {console.error(error);});
     }
 

@@ -9,6 +9,7 @@ import { UserScore } from "../payload/UserScore.js";
 class ClientSideREST {
 
     static URL_QUIZ_Q = "/quiz/questions";
+    static URL_QUIZ_Q_TOPIC = "/quiz/questions/topic";
     static URL_LDRBOARD = "/users?leaderboard=true";
     static URL_USER = "/users";
     static URL_USER_SRCH_BY_USRNM = "/users/?username";
@@ -54,7 +55,7 @@ class ClientSideREST {
      */
     static async fetchQuizQuestionList(topicId, limit, random) {
 
-        const res = await fetch(`${this.URL_QUIZ_Q}/${topicId}?limit=${limit}&random=${random}`);
+        const res = await fetch(`${this.URL_QUIZ_Q_TOPIC}/${topicId}?limit=${limit}&random=${random}`);
 
         if (!res.ok) {
 

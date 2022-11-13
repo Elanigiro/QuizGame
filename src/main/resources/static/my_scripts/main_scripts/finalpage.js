@@ -49,7 +49,7 @@ function showStats() {
  */
 function clickedRestart(e) {
 
-  window.location.reload();
+  window.location.assign('/quiz/quiz.html');
 }
 
 function setRetry() {

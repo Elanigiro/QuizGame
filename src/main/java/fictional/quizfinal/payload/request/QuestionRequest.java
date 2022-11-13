@@ -5,17 +5,14 @@ import javax.validation.constraints.AssertTrue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
-import fictional.quizfinal.service.DifficultyService;
 import fictional.quizfinal.service.QuestionService;
 
 @Configurable (dependencyCheck=true)
 public class QuestionRequest {
 
     @Autowired QuestionService questionService;
-    @Autowired DifficultyService difficultyService;
 
     private int questId;
-    private int diff;
 
     @AssertTrue(message = "Invalid Question Id")
     public boolean isValidQuestId() {
@@ -23,15 +20,9 @@ public class QuestionRequest {
         return questionService.fetchQuestion(questId).isPresent();
     }
 
-    @AssertTrue(message = "Invalid Difficulty")
-    public boolean isValidDifficulty() {
+    public QuestionRequest(int questId) {
 
-        return difficultyService.isValidDifficulty(diff);
-    }
-
-    public QuestionRequest(int questId, int diff) {
         this.questId = questId;
-        this.diff = diff;
     }
 
     public QuestionRequest() {
@@ -43,13 +34,5 @@ public class QuestionRequest {
 
     public void setQuestId(int questId) {
         this.questId = questId;
-    }
-
-    public int getDiff() {
-        return diff;
-    }
-
-    public void setDiff(int diff) {
-        this.diff = diff;
     }
 }

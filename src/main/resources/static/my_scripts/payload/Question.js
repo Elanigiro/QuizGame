@@ -4,14 +4,14 @@ class Question {
   
     /**
      * 
-     * @param {number} questId 
+     * @param {number} idQuest 
      * @param {string} question 
      * @param {string} source 
      * @param {Answer[]} answers 
      */
-    constructor(questId, question, source, answers) {
+    constructor(idQuest, question, source, answers) {
 
-        this.questId = questId;
+        this.idQuest = idQuest;
         this.question = question;
         this.source = source;
         this.answers = answers;
@@ -26,7 +26,7 @@ class Question {
 
         const parsedAnswers = json.answers.map((item) => Answer.fromJson(item));
 
-        return new Question(json.questId, json.question, json.source, parsedAnswers);
+        return new Question(json.idQuest, json.question, json.source, parsedAnswers);
     }
 }
 
