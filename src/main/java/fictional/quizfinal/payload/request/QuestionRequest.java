@@ -6,38 +6,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import fictional.quizfinal.service.DifficultyService;
-import fictional.quizfinal.service.TopicService;
+import fictional.quizfinal.service.QuestionService;
 
 @Configurable (dependencyCheck=true)
-public class StartRequest {
+public class QuestionRequest {
 
+    @Autowired QuestionService questionService;
     @Autowired DifficultyService difficultyService;
-    @Autowired TopicService topicService;
 
+    private int questId;
     private int diff;
-    private int topic;
-    
+
+    @AssertTrue(message = "Invalid Question Id")
+    public boolean isValidQuestId() {
+
+        return questionService.fetchQuestion(questId).isPresent();
+    }
+
     @AssertTrue(message = "Invalid Difficulty")
     public boolean isValidDifficulty() {
 
         return difficultyService.isValidDifficulty(diff);
     }
 
-    @AssertTrue(message = "Invalid Topic")
-    public boolean isValidTopic() {
-
-        return topicService.isValidTopic(topic);
-    }
-
-    public StartRequest(int diff, int topic) {
-
-        System.out.println(difficultyService);
-
+    public QuestionRequest(int questId, int diff) {
+        this.questId = questId;
         this.diff = diff;
-        this.topic = topic;
     }
 
-    public StartRequest() {
+    public QuestionRequest() {
+    }
+
+    public int getQuestId() {
+        return questId;
+    }
+
+    public void setQuestId(int questId) {
+        this.questId = questId;
     }
 
     public int getDiff() {
@@ -46,13 +51,5 @@ public class StartRequest {
 
     public void setDiff(int diff) {
         this.diff = diff;
-    }
-
-    public int getTopic() {
-        return topic;
-    }
-
-    public void setTopic(int topic) {
-        this.topic = topic;
     }
 }

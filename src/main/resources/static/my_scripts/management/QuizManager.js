@@ -29,28 +29,28 @@ export class QuizManager {
         this.totalScore = 0;
 
         this.startUp()
-        .then(this.getNextQuestion)
+        .then(() => this.getNextQuestion())
         .then(() => {QuizUtils.displayQuestion(this.idx, this.currentQuestion);})
         .then(() => {QuizUtils.enableQuiz(this.clickedAnswer)})
-        .catch((error) => {console.error(`PRINT ERROR: ${error}`);});
+        .catch((error) => {console.error(error);});
     }
 
     /**
-     * @returns {Promise<any>}
+     * @returns {Promise<undefined>}
      */
     async startUp() {
 
         window.sessionStorage.clear();
         QuizUtils.setButtons(this.difficulty);
-        this.questions = await ClientSideREST.fetchQuizQuestionList(QuizUtils.QUESTION_NO);
+        this.questions = await ClientSideREST.fetchQuizQuestionList(this.topic, QuizUtils.QUESTION_NO, true);
     }
 
     /**
-     * @returns {Promise<any>}
+     * @returns {Promise<undefined>}
      */
     async getNextQuestion() {
 
-        this.currentQuestion = await ClientSideREST.fetchOneQuestion(this.questions.questionCodes[idx++]);
+        this.currentQuestion = await ClientSideREST.fetchOneQuestion(this.questions.questionCodes[this.idx++]);
     }
 
     setButtonTruth() {

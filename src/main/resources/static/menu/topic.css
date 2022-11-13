@@ -99,7 +99,7 @@ footer h2 {
     margin: 1% auto;
 }
 
-#facile {
+#history {
     background-image: url("../images/history.jpg");
     filter: grayscale(100%);
     transition: transform .2s;
@@ -107,14 +107,14 @@ footer h2 {
 
 }
 
-#normale {
+#movies {
     background-image: url("../images/movies.jpg");
     filter: grayscale(100%);
     transition: transform .2s;
     background-size: cover;
 }
 
-#difficile {
+#latin {
     background-image: url("../images/latin.jpg");
     filter: grayscale(100%);
     transition: transform .2s;
@@ -125,7 +125,7 @@ footer h2 {
 /* Not on touchscreens*/
 @media (hover: hover) {
 
-    #facile:hover:not(.selected) {
+    #history:hover:not(.selected) {
         box-shadow: 10px 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
         cursor: pointer;
         transform: scale(1.2);
@@ -133,7 +133,7 @@ footer h2 {
         filter: grayscale(0%);
     }
 
-    #normale:hover:not(.selected) {
+    #movies:hover:not(.selected) {
         box-shadow: 10px 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
         cursor: pointer;
         transform: scale(1.2);
@@ -141,7 +141,7 @@ footer h2 {
         filter: grayscale(0%);
     }
 
-    #difficile:hover:not(.selected) {
+    #latin:hover:not(.selected) {
         box-shadow: 10px 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
         cursor: pointer;
         transform: scale(1.2);
@@ -152,17 +152,17 @@ footer h2 {
 
 
 
-#facile.selected {
+#history.selected {
     border-color: #facb96;
     filter: grayscale(0%);
 }
 
-#normale.selected {
+#movies.selected {
     border-color: #facb96;
     filter: grayscale(0%);
 }
 
-#difficile.selected {
+#latin.selected {
     border-color: #facb96;
     filter: grayscale(0%);
 }
@@ -180,9 +180,9 @@ footer h2 {
         padding: 0.2em;
     }
 
-    #facile,
-    #normale,
-    #difficile {
+    #history,
+    #movies,
+    #latin {
 
         display: flex;
         align-items: center;
@@ -219,17 +219,17 @@ footer h2 {
         padding: 0 5%;
     }
 
-    #facile.selected~footer {
+    #history.selected~footer {
 
         top: 17vh;
     }
 
-    #normale.selected~footer {
+    #movies.selected~footer {
 
         top: calc(40vw + 19vh);
     }
 
-    #difficile.selected~footer {
+    #latin.selected~footer {
 
         top: calc(80vw + 21vh);
     }
@@ -249,9 +249,9 @@ footer h2 {
         margin-bottom: 5vh;
     }
 
-    #facile,
-    #normale,
-    #difficile {
+    #history,
+    #movies,
+    #latin {
 
         display: flex;
         align-items: center;
@@ -290,17 +290,17 @@ footer h2 {
         padding: 0 5%;
     }
 
-    #facile.selected~footer {
+    #history.selected~footer {
 
         top: 17vh;
     }
 
-    #normale.selected~footer {
+    #movies.selected~footer {
 
         top: calc(min(35vw, 180px) + 19vh);
     }
 
-    #difficile.selected~footer {
+    #latin.selected~footer {
 
         top: calc(min(70vw, 360px) + 21vh);
     }
@@ -332,9 +332,9 @@ footer h2 {
         margin: 3vh 2vw;
     }
 
-    #facile,
-    #normale,
-    #difficile {
+    #history,
+    #movies,
+    #latin {
 
         display: inline-flex;
         align-items: center;
@@ -367,9 +367,9 @@ footer h2 {
         font-size: 35px;
     }
 
-    #facile,
-    #normale,
-    #difficile {
+    #history,
+    #movies,
+    #latin {
 
         font-size: 30px;
         max-height: 350px;

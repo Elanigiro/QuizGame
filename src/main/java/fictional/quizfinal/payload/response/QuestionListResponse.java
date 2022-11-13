@@ -4,31 +4,17 @@ import java.util.List;
 
 public class QuestionListResponse {
 
-    public static final int QUESTION_POOL_SIZE = 10;
+    public static final int QUESTION_MAX_POOL_SIZE = 35;
 
-    private int scorePerQuestion;
     private int gameVersion;
     private List<Integer> questionCodes;
 
-    public QuestionListResponse(int scorePerQuestion, int gameVersion, List<Integer> questionCodes) {
-        this.scorePerQuestion = scorePerQuestion;
+    public QuestionListResponse(int gameVersion, List<Integer> questionCodes) {
         this.gameVersion = gameVersion;
         this.questionCodes = questionCodes;
     }
 
     public QuestionListResponse() {
-    }
-
-    public static int getQuestionPoolSize() {
-        return QUESTION_POOL_SIZE;
-    }
-
-    public int getScorePerQuestion() {
-        return scorePerQuestion;
-    }
-
-    public void setScorePerQuestion(int scorePerQuestion) {
-        this.scorePerQuestion = scorePerQuestion;
     }
 
     public int getGameVersion() {
@@ -46,5 +32,4 @@ public class QuestionListResponse {
     public void setQuestionCodes(List<Integer> questionCodes) {
         this.questionCodes = questionCodes;
     }
-
 }

@@ -24,29 +24,29 @@ public class HomeController {
     @Autowired GameVersionService gameVersionService;
     @Autowired UserScoreService userScoreService;
 
-    @GetMapping({"/", "/home"})
-    public ModelAndView home() {
+    // @GetMapping({"/", "/home"})
+    // public ModelAndView home() {
 
-        return new ModelAndView("/home/index");
-    }
+    //     return new ModelAndView("/home/index");
+    // }
 
-    // Sends the response as JSON
-    @GetMapping("/home/leaderboard")
-    public ResponseEntity<List<ILeaderboardEntry>> getLeaderboard() {
+    // // Sends the response as JSON
+    // @GetMapping("/home/leaderboard")
+    // public ResponseEntity<List<ILeaderboardEntry>> getLeaderboard() {
 
-        List<ILeaderboardEntry> res = userScoreService.fetchLeaderboard(gameVersionService.fetchLatestVersionId().get());
+    //     List<ILeaderboardEntry> res = userScoreService.fetchLeaderboard(gameVersionService.fetchLatestVersionId().get());
 
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Vary", "*"); // uncacheable resource
-        return new ResponseEntity<List<ILeaderboardEntry>>(res, responseHeaders, HttpStatus.OK);
-    }
+    //     HttpHeaders responseHeaders = new HttpHeaders();
+    //     responseHeaders.set("Vary", "*"); // uncacheable resource
+    //     return new ResponseEntity<List<ILeaderboardEntry>>(res, responseHeaders, HttpStatus.OK);
+    // }
 
-    // If DB is a not in a valid state (eg. The Leaderboard View is missing entirely)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(NoSuchElementException.class)
-    public String handleDBExceptions(NoSuchElementException ex) {
+    // // If DB is a not in a valid state (eg. The Leaderboard View is missing entirely)
+    // @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    // @ExceptionHandler(NoSuchElementException.class)
+    // public String handleDBExceptions(NoSuchElementException ex) {
         
-        Logging.logError(ex.getMessage(), Exception.class.getName());
-        return "Internal DB Error";
-    }
+    //     Logging.logError(ex.getMessage(), Exception.class.getName());
+    //     return "Internal DB Error";
+    // }
 }

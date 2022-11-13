@@ -58,12 +58,12 @@ class QuizUtils {
 
   static disableButtons() {
 
-      [...document.getElementsByClassName("quiz_button")].forEach((btn) => {(new HTMLButtonElement(btn)).disabled = true;});
+      [...document.getElementsByClassName("quiz_button")].forEach((btn) => {btn.disabled = true;});
   }
 
   static enableButtons() {
 
-      [...document.getElementsByClassName("quiz_button")].forEach((btn) => {(new HTMLButtonElement(btn)).disabled = true;});
+      [...document.getElementsByClassName("quiz_button")].forEach((btn) => {btn.disabled = true;});
   }
 
   static removeNextButton() {

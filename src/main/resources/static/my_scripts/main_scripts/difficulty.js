@@ -55,7 +55,7 @@ function main(){
 
   if (id) {
 
-    clickedButtonProcessing(new HTMLButtonElement(document.getElementById(`${ID_MAP.get(id)}`)));
+    clickedButtonProcessing(document.getElementById(`${ID_MAP.get(parseInt(id))}`));
   }
 
   //set event handlers

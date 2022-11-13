@@ -8,11 +8,11 @@ import { UserScore } from "../payload/UserScore.js";
  */
 class ClientSideREST {
 
-    static URL_QUIZ_Q = "./quiz/questions";
-    static URL_LDRBOARD = "./users?leaderboard=true";
-    static URL_USER = "./users";
-    static URL_USER_SRCH_BY_USRNM = "./users/?username";
-    static URL_USER_SCORES = /* './users/:id/' */"scores";
+    static URL_QUIZ_Q = "/quiz/questions";
+    static URL_LDRBOARD = "/users?leaderboard=true";
+    static URL_USER = "/users";
+    static URL_USER_SRCH_BY_USRNM = "/users/?username";
+    static URL_USER_SCORES = /* '/users/:id/' */"scores";
 
     /**
      * @throws {Error}
@@ -47,17 +47,14 @@ class ClientSideREST {
     }
 
     /**
+     * @param {number} topicId
      * @param {number} limit
+     * @param {boolean} random
      * @returns {Promise<QuestionList>}
      */
-    static async fetchQuizQuestionList(limit) {
+    static async fetchQuizQuestionList(topicId, limit, random) {
 
-        if ((parseInt(limit) !== limit) || (limit <= 0)) {
-
-            throw new Error('limit must be a positive integer!');
-        }
-
-        const res = await fetch(`${this.URL_QUIZ_Q}?limit=${limit}`);
+        const res = await fetch(`${this.URL_QUIZ_Q}/${topicId}?limit=${limit}&random=${random}`);
 
         if (!res.ok) {
 

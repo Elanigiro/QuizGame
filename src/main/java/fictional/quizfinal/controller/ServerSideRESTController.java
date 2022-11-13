@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 import fictional.quizfinal.entity.Question;
 import fictional.quizfinal.entity.QuizUser;
 import fictional.quizfinal.entity.UserScore;
-import fictional.quizfinal.payload.request.NextQuestionRequest;
-import fictional.quizfinal.payload.request.StartRequest;
+import fictional.quizfinal.payload.request.QuestionListRequest;
+import fictional.quizfinal.payload.request.QuestionRequest;
 import fictional.quizfinal.payload.request.UserScoreRequest;
 import fictional.quizfinal.payload.response.QuestionListResponse;
 import fictional.quizfinal.service.AnswerService;
@@ -44,8 +44,8 @@ import fictional.quizfinal.utility.Logging;
 import fictional.quizfinal.utility.validation.ValidationOrder;
 
 @RestController
-@RequestMapping("/quiz")
-public class QuizController {
+@RequestMapping("")
+public class ServerSideRESTController {
 
     @Autowired QuestionService questionService;
     @Autowired TopicService topicService;
@@ -57,20 +57,15 @@ public class QuizController {
     @Autowired UserScoreService userScoreService;
 
     // Sends question list as JSON
-    @GetMapping("/start") 
-    public ResponseEntity<QuestionListResponse> startQuiz(@Valid StartRequest start) {
+    @GetMapping(path = "/quiz/questions/{topic}", params = {"limit", "random"}) 
+    public ResponseEntity<QuestionListResponse> getQuestionList(@Valid QuestionListRequest qlr) {
 
         QuestionListResponse res = new QuestionListResponse();
-        res.setQuestionCodes(questionService.fetchQuestionCodes(topicService.fetchTopic(start.getTopic()).get()));
 
-        // random order
-        Collections.shuffle(res.getQuestionCodes());
-        // select only a POOL of N Questions
-        res.setQuestionCodes(res.getQuestionCodes().subList(0, QuestionListResponse.QUESTION_POOL_SIZE));
+        // fetch the question ids (random or not)
+        res.setQuestionCodes(questionService.fetchQuestionCodes(topicService.fetchTopic(qlr.getTopic()).get(), qlr.getLimit(), qlr.isRandom()));
         // current game version
         res.setGameVersion(gameVersionService.fetchLatestVersionId().get());
-        // score per correct Answer for the chosen difficulty and current game version
-        res.setScorePerQuestion(diff_VersionService.fetchScore(start.getDiff(), res.getGameVersion()));
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Vary", "*"); // uncacheable resource
@@ -79,7 +74,7 @@ public class QuizController {
 
     // Sends question as JSON
     @GetMapping("/nextQuestion")
-    public ResponseEntity<Question> nextQuestion(@Valid NextQuestionRequest nx) {
+    public ResponseEntity<Question> getQuestion(@Valid QuestionRequest qr) {
 
         Question res = questionService.fetchQuestion(nx.getQuestId()).get();
 
