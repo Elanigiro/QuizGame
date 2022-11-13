@@ -1,25 +1,29 @@
+import { QuizUtils } from "../utility/quizUtils";
 
+/**
+ * @param {Event} e 
+ */
+function clickedAnswer(e) {
+  /** @type {Element}  */
+  const selected = e.target;
 
-void main() {
-  //set eventListeners
-  (querySelector("#A1") as ButtonElement).onClick.listen(clickedAlertAnswer);
-  (querySelector("#A2") as ButtonElement).onClick.listen(clickedAlertAnswer);
-  (querySelector("#A3") as ButtonElement).onClick.listen(clickedAlertAnswer);
-  (querySelector("#A4") as ButtonElement).onClick.listen(clickedAlertAnswer);
+  if (selected.classList.contains("quiz_button")){
+
+      selected.classList.add("selected");
+      //disable all buttons
+      QuizUtils.disableButtons();
+  }
+  else {
+
+      //I need this line in case of a click just outside of a button in order to reactivate the quiz
+      QuizUtils.enableQuiz(clickedAnswer);
+  }
 }
 
-void clickedAlertAnswer(MouseEvent me) {
-  ButtonElement selected = me.target as ButtonElement;
-  selected.classes.add("selected");
-  //disable all buttons
-  disableButtons();
-  //add true/false class to buttons
-  setButtonTruth();
+function main(){
+
+  QuizUtils.enableQuiz(clickedAnswer);
 }
 
-void setButtonTruth() {
-  (querySelector("#A1") as ButtonElement).classes.add("false");
-  (querySelector("#A2") as ButtonElement).classes.add("true");
-  (querySelector("#A3") as ButtonElement).classes.add("false");
-  (querySelector("#A4") as ButtonElement).classes.add("false");
-}
+//start
+main();

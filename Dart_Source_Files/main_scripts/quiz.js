@@ -1,6 +1,3 @@
-import 'dart:html';
-import '../utility/HttpHandlersManager.dart';
-import '../utility/viewModel.dart';
 
 void main() async {
   HttpHandlersManager manager = HttpHandlersManager();

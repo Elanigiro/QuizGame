@@ -69,20 +69,20 @@ footer h2 {
 
 /* THESE ARE THE IDs OF THE BUTTONS  */
 
-#facile {
+#easy {
 
     background-color: rgb(126, 126, 126);
     opacity: 0.7;
     transition: transform .2s;
 }
 
-#normale {
+#medium {
     background-color: rgb(126, 126, 126);
     opacity: 0.7;
     transition: transform .2s;
 }
 
-#difficile {
+#hard {
     background-color: rgb(126, 126, 126);
     opacity: 0.7;
     transition: transform .2s;
@@ -91,7 +91,7 @@ footer h2 {
 /* Not on touchscreens*/
 @media (hover: hover) {
 
-    #facile:hover:not(.selected) {
+    #easy:hover:not(.selected) {
         opacity: 1;
         box-shadow: 10px 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
         cursor: pointer;
@@ -99,7 +99,7 @@ footer h2 {
         background-color: green;
     }
 
-    #normale:hover:not(.selected) {
+    #medium:hover:not(.selected) {
         opacity: 1;
         box-shadow: 10px 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
         cursor: pointer;
@@ -107,7 +107,7 @@ footer h2 {
         background-color: orange;
     }
 
-    #difficile:hover:not(.selected) {
+    #hard:hover:not(.selected) {
         opacity: 1;
         box-shadow: 10px 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
         cursor: pointer;
@@ -116,45 +116,45 @@ footer h2 {
     }
 }
 
-#facile.selected {
+#easy.selected {
     opacity: 1;
     background-color: green;
     border-color: white;
 }
 
-#normale.selected {
+#medium.selected {
     opacity: 1;
     background-color: orange;
     border-color: white;
 }
 
-#difficile.selected {
+#hard.selected {
     opacity: 1;
     background-color: red;
     border-color: white;
 }
 
-#score.facile {
+#score.easy {
     color: rgb(0, 209, 0);
 }
 
-#score.normale {
+#score.medium {
     color: rgb(255, 208, 0);
 }
 
-#score.difficile {
+#score.hard {
     color: #ff0000;
 }
 
-#options.facile {
+#options.easy {
     color: rgb(0, 209, 0);
 }
 
-#options.normale {
+#options.medium {
     color: rgb(255, 208, 0);
 }
 
-#options.difficile {
+#options.hard {
     color: #ff0000;
 }
 
@@ -176,9 +176,9 @@ footer h2 {
         padding: 0.2em;
     }
 
-    #facile,
-    #normale,
-    #difficile {
+    #easy,
+    #medium,
+    #hard {
 
         display: flex;
         align-items: center;
@@ -213,17 +213,17 @@ footer h2 {
         padding: 0 5%;
     }
 
-    #facile.selected~footer {
+    #easy.selected~footer {
 
         top: 17vh;
     }
 
-    #normale.selected~footer {
+    #medium.selected~footer {
 
         top: calc(40vw + 19vh);
     }
 
-    #difficile.selected~footer {
+    #hard.selected~footer {
 
         top: calc(80vw + 21vh);
     }
@@ -243,9 +243,9 @@ footer h2 {
         margin-bottom: 5vh;
     }
 
-    #facile,
-    #normale,
-    #difficile {
+    #easy,
+    #medium,
+    #hard {
 
         display: flex;
         align-items: center;
@@ -283,17 +283,17 @@ footer h2 {
         padding: 0 5%;
     }
 
-    #facile.selected~footer {
+    #easy.selected~footer {
 
         top: 17vh;
     }
 
-    #normale.selected~footer {
+    #medium.selected~footer {
 
         top: calc(min(35vw, 180px) + 19vh);
     }
 
-    #difficile.selected~footer {
+    #hard.selected~footer {
 
         top: calc(min(70vw, 360px) + 21vh);
     }
@@ -323,9 +323,9 @@ footer h2 {
         margin: 3vh 2vw;
     }
 
-    #facile,
-    #normale,
-    #difficile {
+    #easy,
+    #medium,
+    #hard {
 
         display: inline-flex;
         align-items: center;
@@ -358,9 +358,9 @@ footer h2 {
         font-size: 35px;
     }
 
-    #facile,
-    #normale,
-    #difficile {
+    #easy,
+    #medium,
+    #hard {
 
         font-size: 30px;
         max-height: 350px;

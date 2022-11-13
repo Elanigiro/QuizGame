@@ -98,7 +98,7 @@ export class QuizManager {
         else {
 
             //I need this line in case of a click just outside of a button in order to reactivate the quiz
-            this.enableQuiz();
+            QuizUtils.enableQuiz(this.clickedAnswer);
         }
     }
 
