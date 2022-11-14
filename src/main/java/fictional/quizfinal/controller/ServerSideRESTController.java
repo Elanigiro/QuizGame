@@ -7,29 +7,37 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import fictional.quizfinal.entity.DiffVersion;
 import fictional.quizfinal.entity.Question;
 import fictional.quizfinal.entity.QuizUser;
 import fictional.quizfinal.entity.UserScore;
 import fictional.quizfinal.payload.request.QuestionListRequest;
 import fictional.quizfinal.payload.request.QuestionRequest;
-import fictional.quizfinal.payload.request.UserScoreRequest;
+import fictional.quizfinal.payload.request.ScoreRequest;
+import fictional.quizfinal.payload.request.UserIdRequest;
+import fictional.quizfinal.payload.request.UserRequest;
+import fictional.quizfinal.payload.request.UserResultRequest;
 import fictional.quizfinal.payload.response.QuestionListResponse;
 import fictional.quizfinal.service.AnswerService;
 import fictional.quizfinal.service.Diff_VersionService;
@@ -80,39 +88,62 @@ public class ServerSideRESTController {
         return new ResponseEntity<Question>(res, HttpStatus.OK);
     }
 
+    // Sends score per question as JSON
+    @GetMapping("/quiz/scores/{version}/{difficulty}")
+    public ResponseEntity<DiffVersion> getDiffVersionScore(@Validated(ValidationOrder.class) ScoreRequest sr) {
+
+        DiffVersion res = diff_VersionService.fetchScore(sr.getDifficulty(), sr.getVersion()).get();
+
+        return new ResponseEntity<DiffVersion>(res, HttpStatus.OK);
+    }
+
+    // Sends user as JSON if found
+    @GetMapping(path = "/users", params = {"username"})
+    public ResponseEntity<QuizUser> getUserByUsername(@Valid UserRequest ur) {
+
+        QuizUser res = quizUserService.fetchUser(ur.getUsername()).orElse(null);
+
+        if (res == null) {
+
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
     // Saves the quiz result into the DB if validated
-    @PostMapping("/results")
-    public ResponseEntity<String> saveResults(@Validated(ValidationOrder.class) @RequestBody UserScoreRequest req) {
+    @PostMapping("/users/{userId}/scores")
+    public ResponseEntity<Integer> saveResults(@Valid UserIdRequest uir, @Validated(ValidationOrder.class) @RequestBody UserResultRequest req) {
 
         UserScore us = new UserScore();
 
-        Optional<QuizUser> tmpQuizUser = quizUserService.fetchUser(req.getUsername());
+        QuizUser tmpQuizUser = quizUserService.fetchUserById(uir.getUserId()).get();
 
-        // new user
-        if (tmpQuizUser.isEmpty()) {
-
-            us.setQuizuser(new QuizUser());
-            us.getQuizuser().setFirstLoginDate(Timestamp.from(Instant.now()));
-            us.getQuizuser().setNickname(req.getUsername());
-
-            quizUserService.saveUser(us.getQuizuser());
-        }
-        else {
-
-            us.setQuizuser(tmpQuizUser.get());
-        }
-
+        us.setQuizuser(tmpQuizUser);
         us.setScoreTimestamp(Timestamp.from(Instant.now()));
         us.setDifficulty(difficultyService.fetchDifficulty(req.getDifficulty()).get());
         us.setTotalScore(req.getResult());
         us.setGameVersion(gameVersionService.fetchGameVersion(req.getGameVersion()).get());
         us.setTopic(topicService.fetchTopic(req.getTopic()).get());
         
-        userScoreService.saveUserScore(us);
+        int newId = userScoreService.saveUserScore(us).getIdRow();
 
-        Logging.logDebug(us.toString(), UserScoreRequest.class.getName());
+        Logging.logDebug(us.toString(), UserResultRequest.class.getName());
 
-        return new ResponseEntity<String>("Result saved", HttpStatus.CREATED);
+        return new ResponseEntity<Integer>(newId, HttpStatus.CREATED);
+    }
+
+    // Saves a new user into the DB
+    @PostMapping("/users")
+    public ResponseEntity<Integer> saveNewUser(@Valid @RequestBody UserRequest usr) {
+
+        QuizUser newUser = new QuizUser();
+        newUser.setFirstLoginDate(Timestamp.from(Instant.now()));
+        newUser.setNickname(usr.getUsername());
+
+        int newId = quizUserService.saveUser(newUser).getIdUser();
+
+        return new ResponseEntity<Integer>(newId, HttpStatus.CREATED);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

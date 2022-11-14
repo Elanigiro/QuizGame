@@ -7,7 +7,8 @@ import javax.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
-import fictional.quizfinal.payload.response.QuestionListResponse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fictional.quizfinal.service.TopicService;
 
 @Configurable (dependencyCheck=true)
@@ -15,9 +16,12 @@ public class QuestionListRequest {
 
     @Autowired TopicService topicService;
 
+    @JsonIgnore
+    public static final int QUESTION_MAX_POOL_SIZE = 35;
+
     private int topic;
     @Min(value = 1, message = "limit must be strictly greater than 0")
-    @Max(value = QuestionListResponse.QUESTION_MAX_POOL_SIZE, message = "limit must be less than " + QuestionListResponse.QUESTION_MAX_POOL_SIZE)
+    @Max(value = QUESTION_MAX_POOL_SIZE, message = "limit must be less than " + QUESTION_MAX_POOL_SIZE)
     private int limit;
     private boolean random;
 

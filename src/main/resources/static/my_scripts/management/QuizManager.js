@@ -1,5 +1,6 @@
-import { Question } from "../payload/Question.js";
-import { QuestionList } from "../payload/QuestionList.js";
+import { DiffVersionScore } from "../payload/response/DiffVersionScore.js";
+import { Question } from "../payload/response/Question.js";
+import { QuestionList } from "../payload/response/QuestionList.js";
 import { ClientSideREST } from "../utility/ClientSideREST.js";
 import { QuizUtils } from "../utility/QuizUtils.js";
 
@@ -17,6 +18,8 @@ export class QuizManager {
     difficulty;
     /** @type {number} */
     topic;
+    /** @type {DiffVersionScore} */
+    diffVersionScore;
 
     /** @type {Question} */
     currentQuestion;
@@ -25,6 +28,7 @@ export class QuizManager {
 
         this.difficulty = parseInt(window.localStorage.getItem('diff'))?? 2;
         this.topic = parseInt(window.localStorage.getItem('topic'))?? 2;
+        this.diffVersionScore = null; //flag value
         this.idx = 0;
         this.totalScore = 0;
 
@@ -43,6 +47,7 @@ export class QuizManager {
         window.sessionStorage.clear();
         QuizUtils.setButtons(this.difficulty);
         this.questions = await ClientSideREST.fetchQuizQuestionList(this.topic, QuizUtils.QUESTION_NO, true);
+        this.scorePerQuestion = await ClientSideREST.fetchDiffVersionScore(this.questions.gameVersion, this.difficulty);
     }
 
     /**
@@ -82,9 +87,12 @@ export class QuizManager {
             QuizUtils.disableButtons();
             //add true/false class to buttons
             this.setButtonTruth();
-
+            //verify correctness
+            const isCorrect = (document.querySelector('.quiz_button.selected.true'))? true : false;
+            //update score
+            this.totalScore += (isCorrect)? this.scorePerQuestion.scorePerQuest : 0;
             //save the result in window.sessionStorage
-            QuizUtils.updateStats(this.idx);
+            QuizUtils.updateStats(this.idx, isCorrect);
 
             if (this.hasNext()) {
 
@@ -132,6 +140,7 @@ export class QuizManager {
     beforeLeaving() {
         window.sessionStorage.setItem('game_complete', 'true');
         window.sessionStorage.setItem('session_score', `${this.totalScore}`);
+        window.sessionStorage.setItem('pool_size', `${QuizUtils.QUESTION_NO}`);
         window.sessionStorage.setItem('difficulty', `${this.difficulty}`);
         window.sessionStorage.setItem('topic', `${this.topic}`);
         window.sessionStorage.setItem('game_version', `${this.questions.gameVersion}`);

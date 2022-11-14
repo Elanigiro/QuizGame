@@ -26,7 +26,7 @@ class User {
      */
     static fromJson(json) {
 
-        return new UserScore(json.id, json.username);
+        return new User(json.idUser, json.nickname);
     }
 }
 

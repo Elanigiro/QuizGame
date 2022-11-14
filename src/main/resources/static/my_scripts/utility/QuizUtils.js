@@ -1,5 +1,5 @@
-import { Question } from "../payload/Question.js";
-import { Answer } from "../payload/Answer.js";
+import { Question } from "../payload/response/Question.js";
+import { Answer } from "../payload/response/Answer.js";
 
 class QuizUtils {
 
@@ -171,10 +171,11 @@ class QuizUtils {
   /**
    * 
    * @param {number} idx 
+   * @param {boolean} isCorrect 
    */
-  static updateStats(idx) {
+  static updateStats(idx, isCorrect) {
 
-    window.sessionStorage.setItem(`Q${idx}`, (document.querySelector('.quiz_button.selected.true'))? "correct" : "wrong");
+    window.sessionStorage.setItem(`Q${idx}`, (isCorrect)? "correct" : "wrong");
   }
 }
 

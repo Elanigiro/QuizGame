@@ -20,6 +20,16 @@ public class QuizUserService {
         return quizUserRepository.findByNickname(nickname);
     }
 
+    public Optional<QuizUser> fetchUserById(int id) {
+
+        return quizUserRepository.findById(id);
+    }
+
+    public boolean isValidUserId(int id) {
+
+        return fetchUserById(id).isPresent();
+    }
+
     public QuizUser saveUser(QuizUser user) {
 
         return quizUserRepository.save(user);

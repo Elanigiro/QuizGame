@@ -1,5 +1,5 @@
-import { User } from "../payload/User.js";
-import { UserScore } from "../payload/UserScore.js";
+import { User } from "../payload/response/User.js";
+import { UserResult } from "../payload/request/UserResult.js";
 import { ClientSideREST } from "../utility/ClientSideREST.js";
 
 function redirectIfNotAllowed() {
@@ -69,15 +69,15 @@ function setSend() {
 }
 
 /**
- * 
+ * @param {string} username
  * @returns {Promise<Response>}
  */
-function sendResults() {
+function sendResults(username) {
 
-  return ClientSideREST.sendUserScore(UserScore.fromJson({
+  return ClientSideREST.sendUserScore(username, UserResult.fromJson({
 
-    username: window.localStorage.getItem('username'),
     score: parseInt(window.sessionStorage.getItem('session_score')),
+    questionPoolSize: parseInt(window.sessionStorage.getItem('pool_size')),
     difficulty: parseInt(window.sessionStorage.getItem('difficulty')),
     topic: parseInt(window.sessionStorage.getItem('topic')),
     gameVersion: parseInt(window.sessionStorage.getItem('game_version')),
@@ -88,9 +88,19 @@ async function clickedSend(e) {
 
   window.localStorage.setItem("username", document.getElementById("username_input").value);
 
-  const res = await sendResults();
+  let status;
+  try {
+    
+    await sendResults(window.localStorage.getItem('username'));
+    status = true;
 
-  updateSendResult(res.ok);
+  } catch (error) {
+    
+    console.error(error);
+    status = false;
+  }
+
+  updateSendResult(status);
 }
 
 /**
@@ -136,17 +146,17 @@ function inputValidation(e) {
 
   //removes whitespaces
   let content = String(e.currentTarget.value);
-  content.replaceAll(/\s+/, '');
+  content.replaceAll(/\s+/g, '');
   e.currentTarget.value = content;
 
   //check if username is too long
   if(content.length > User.MAX_NAME_LENGTH) {
 
-    document.getElementsByClassName('.tooltip')[0].classList.add('invalid');
+    document.getElementsByClassName('tooltip')[0].classList.add('invalid');
   }
   else {
 
-    document.getElementsByClassName('.tooltip')[0].classList.remove('invalid');
+    document.getElementsByClassName('tooltip')[0].classList.remove('invalid');
     //check if username is not empty
     if (content) {
       validState = true;

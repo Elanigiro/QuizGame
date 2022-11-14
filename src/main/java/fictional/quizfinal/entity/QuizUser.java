@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.NaturalId;
 
-import fictional.quizfinal.payload.request.UserScoreRequest;
+import fictional.quizfinal.payload.request.UserRequest;
 
 @Entity
 @Table(name = "QUIZUSER")
@@ -21,7 +21,7 @@ public class QuizUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idUser;
     @NaturalId
-    @Column(nullable = false, unique = true, length = UserScoreRequest.USERNAME_MAX_LEN)
+    @Column(nullable = false, unique = true, length = UserRequest.USERNAME_MAX_LEN)
     private String nickname;
     @Column(columnDefinition = "TIMESTAMP NOT NULL WITH DEFAULT CURRENT_TIMESTAMP")
     private Timestamp firstLoginDate;

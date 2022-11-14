@@ -4,8 +4,6 @@ import java.util.List;
 
 public class QuestionListResponse {
 
-    public static final int QUESTION_MAX_POOL_SIZE = 35;
-
     private int gameVersion;
     private List<Integer> questionCodes;
 
