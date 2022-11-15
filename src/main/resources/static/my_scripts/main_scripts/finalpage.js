@@ -146,7 +146,7 @@ function inputValidation(e) {
 
   //removes whitespaces
   let content = String(e.currentTarget.value);
-  content.replaceAll(/\s+/g, '');
+  content = content.replaceAll(/\s+/g, '');
   e.currentTarget.value = content;
 
   //check if username is too long
@@ -181,7 +181,7 @@ function inputValidation(e) {
 function submitInput(ke) {
   // send the result to the server if user pressed Enter
   // and the Username is valid
-  if ((ke.key === "Enter") && !(document.getElementById('send_result'))) {
+  if ((ke.key === "Enter") && !(document.getElementById('send_result').disabled)) {
 
     document.getElementById('send_result').dispatchEvent(new Event('click'));
   }

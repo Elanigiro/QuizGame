@@ -1,5 +1,7 @@
 import { QuizUtils } from "../utility/QuizUtils.js";
 
+const answersCorrectness = [false, true, false, false];
+
 /**
  * @param {Event} e 
  */
@@ -12,6 +14,12 @@ function clickedAnswer(e) {
       selected.classList.add("selected");
       //disable all buttons
       QuizUtils.disableButtons();
+      //set true or false
+      [...document.getElementsByClassName('quiz_button')].forEach((element, idx) => {
+        
+        element.classList.add(`${answersCorrectness[idx]}`);
+      });
+
   }
   else {
 

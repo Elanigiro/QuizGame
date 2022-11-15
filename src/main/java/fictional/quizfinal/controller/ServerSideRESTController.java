@@ -108,7 +108,7 @@ public class ServerSideRESTController {
 
     // Saves the quiz result into the DB if validated
     @PostMapping("/users/{userId}/scores")
-    public ResponseEntity<Integer> saveResults(@Valid UserIdRequest uir, @Validated(ValidationOrder.class) @RequestBody UserResultRequest req) {
+    public ResponseEntity<Integer> postResult(@Valid UserIdRequest uir, @Validated(ValidationOrder.class) @RequestBody UserResultRequest req) {
 
         UserScore us = new UserScore();
 
@@ -130,7 +130,7 @@ public class ServerSideRESTController {
 
     // Saves a new user into the DB
     @PostMapping("/users")
-    public ResponseEntity<Integer> saveNewUser(@Valid @RequestBody UserRequest usr) {
+    public ResponseEntity<Integer> postUser(@Valid @RequestBody UserRequest usr) {
 
         QuizUser newUser = new QuizUser();
         newUser.setFirstLoginDate(Timestamp.from(Instant.now()));
