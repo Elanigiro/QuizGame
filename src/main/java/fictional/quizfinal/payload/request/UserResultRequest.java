@@ -22,7 +22,7 @@ public class UserResultRequest {
     @Autowired TopicService topicService;
     @Autowired Diff_VersionService diff_VersionService;
 
-    private int result;
+    private int score;
     @Min(value = 1, groups = ValidationStep1.class)
     @Max(value = QuestionListRequest.QUESTION_MAX_POOL_SIZE, groups = ValidationStep1.class)
     private int questionPoolSize;
@@ -48,17 +48,17 @@ public class UserResultRequest {
         return topicService.isValidTopic(topic);
     }
 
-    @AssertTrue(message = "Invalid result", groups = ValidationStep2.class)
-    public boolean isValidResult() {
+    @AssertTrue(message = "Invalid score", groups = ValidationStep2.class)
+    public boolean isValidScore() {
 
         int maxPossibleScore = questionPoolSize * diff_VersionService.fetchScore(difficulty, gameVersion).get().getScorePerQuest();
 
         // check if within valid range
-        return ((this.result >= 0) && (this.result <= maxPossibleScore));
+        return ((this.score >= 0) && (this.score <= maxPossibleScore));
     }
 
-    public int getResult() {
-        return result;
+    public int getScore() {
+        return score;
     }
 
     public int getQuestionPoolSize() {
@@ -77,8 +77,8 @@ public class UserResultRequest {
         return gameVersion;
     }
 
-    public void setResult(int result) {
-        this.result = result;
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public void setQuestionPoolSize(int questionPoolSize) {

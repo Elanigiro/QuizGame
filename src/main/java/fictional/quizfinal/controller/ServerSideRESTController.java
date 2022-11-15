@@ -119,7 +119,7 @@ public class ServerSideRESTController {
         us.setQuizuser(tmpQuizUser);
         us.setScoreTimestamp(Timestamp.from(Instant.now()));
         us.setDifficulty(difficultyService.fetchDifficulty(req.getDifficulty()).get());
-        us.setTotalScore(req.getResult());
+        us.setTotalScore(req.getScore());
         us.setGameVersion(gameVersionService.fetchGameVersion(req.getGameVersion()).get());
         us.setTopic(topicService.fetchTopic(req.getTopic()).get());
         
