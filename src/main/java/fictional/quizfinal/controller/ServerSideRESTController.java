@@ -3,11 +3,15 @@ package fictional.quizfinal.controller;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
+import javax.validation.constraints.AssertFalse;
+import javax.validation.constraints.AssertTrue;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +24,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import fictional.quizfinal.dto.ILeaderboardEntry;
 import fictional.quizfinal.entity.DiffVersion;
 import fictional.quizfinal.entity.Question;
 import fictional.quizfinal.entity.QuizUser;
@@ -140,6 +146,26 @@ public class ServerSideRESTController {
 
         return new ResponseEntity<Integer>(newId, HttpStatus.CREATED);
     }
+
+    // Sends the leaderboard as JSON
+    @GetMapping(path = "/users")
+    public ResponseEntity<String> getLed() {
+
+        return new ResponseEntity<>("ciaone", HttpStatus.OK);
+    }
+
+    // Sends the leaderboard as JSON - note the value of the "leaderboard" parameter is actually meaningless
+    @GetMapping(path = "/users", params = {"leaderboard"})
+    public ResponseEntity<List<ILeaderboardEntry>> getLeaderboard() {
+
+        List<ILeaderboardEntry> res = userScoreService.fetchLeaderboard(gameVersionService.fetchLatestVersionId().get());
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Vary", "*"); // uncacheable resource
+        return new ResponseEntity<List<ILeaderboardEntry>>(res, responseHeaders, HttpStatus.OK);
+    }
+
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})

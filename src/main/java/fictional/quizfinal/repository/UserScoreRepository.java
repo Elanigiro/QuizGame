@@ -16,6 +16,6 @@ public interface UserScoreRepository extends JpaRepository<UserScore, Integer> {
     
     List<UserScore> findByQuizuserOrderByTotalScore(QuizUser user);
 
-    @Query(value = "SELECT nickname, score FROM LeaderboardOfVersion WHERE game_version = :version FETCH FIRST 100 ROWS ONLY", nativeQuery = true)
+    @Query(value = "SELECT nickname AS username, score FROM LeaderboardOfVersion WHERE game_version = :version ORDER BY score DESC FETCH FIRST 100 ROWS ONLY", nativeQuery = true)
     List<ILeaderboardEntry> fetchLeaderboard(@Param(value = "version") int version);
 }
