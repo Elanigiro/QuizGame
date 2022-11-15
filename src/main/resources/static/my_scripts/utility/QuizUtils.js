@@ -4,7 +4,7 @@ import { Answer } from "../payload/response/Answer.js";
 class QuizUtils {
 
   static QUESTION_NO = 10;
-  static URL_FINAL = './finalpage.html';
+  static URL_FINAL = '/quiz/finalpage.html';
 
   static DIFF_MAP = new Map([
 
