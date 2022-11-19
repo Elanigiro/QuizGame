@@ -1,8 +1,11 @@
 # QuizGame
 
 This is a Spring Boot Java web application[^1].
+
 The backend is based on a SQL embedded DBMS (Apache Derby) managed through Spring Data JPA and Hibernate ORM.
+
 The frontend scripts are written in JavaScript and make use of the Fetch API and async/await syntax.
+
 The structure and presentation layers are written in pure HTML5 and CSS3.
 The application is made responsive through the use of CSS media query and breakpoints.
 
