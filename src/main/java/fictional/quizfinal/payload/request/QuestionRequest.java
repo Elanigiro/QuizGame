@@ -1,24 +1,11 @@
 package fictional.quizfinal.payload.request;
 
-import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotNull;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-
-import fictional.quizfinal.service.QuestionService;
-
-@Configurable (dependencyCheck=true)
 public class QuestionRequest {
 
-    @Autowired QuestionService questionService;
-
-    private int questId;
-
-    @AssertTrue(message = "Invalid Question Id")
-    public boolean isValidQuestId() {
-
-        return questionService.fetchQuestion(questId).isPresent();
-    }
+    @NotNull
+    private Integer questId;
 
     public QuestionRequest(int questId) {
 

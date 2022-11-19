@@ -1,34 +1,48 @@
 package fictional.quizfinal.payload.request;
 
 import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import fictional.quizfinal.entity.Topic;
 import fictional.quizfinal.service.Diff_VersionService;
 import fictional.quizfinal.service.DifficultyService;
 import fictional.quizfinal.service.GameVersionService;
+import fictional.quizfinal.service.QuestionService;
 import fictional.quizfinal.service.TopicService;
 import fictional.quizfinal.utility.validation.ValidationStep1;
 import fictional.quizfinal.utility.validation.ValidationStep2;
+import fictional.quizfinal.utility.validation.ValidationStep3;
 
 @Configurable (dependencyCheck=true)
 public class UserResultRequest {
 
     @Autowired DifficultyService difficultyService;
     @Autowired GameVersionService gameVersionService;
+    @Autowired QuestionService questionService;
     @Autowired TopicService topicService;
     @Autowired Diff_VersionService diff_VersionService;
 
-    private int score;
-    @Min(value = 1, groups = ValidationStep1.class)
-    @Max(value = QuestionListRequest.QUESTION_MAX_POOL_SIZE, groups = ValidationStep1.class)
-    private int questionPoolSize;
-    private int difficulty;
-    private int topic;
-    private int gameVersion;
+    @JsonIgnore
+    private Topic topicObj;
+
+    @NotNull
+    @Min(value = 0)
+    private Integer score;
+    @NotNull
+    @Min(value = 1)
+    private Integer questionPoolSize;
+    @NotNull
+    private Integer difficulty;
+    @NotNull
+    private Integer topic;
+    @NotNull
+    private Integer gameVersion;
 
     @AssertTrue(message = "Invalid difficulty", groups = ValidationStep1.class)
     public boolean isValidDifficulty() {
@@ -45,16 +59,31 @@ public class UserResultRequest {
     @AssertTrue(message = "Invalid topic", groups = ValidationStep1.class)
     public boolean isValidTopic() {
 
-        return topicService.isValidTopic(topic);
+        topicObj = topicService.fetchTopic(topic).orElse(null);
+        return topicObj != null;
     }
 
-    @AssertTrue(message = "Invalid score", groups = ValidationStep2.class)
+    @AssertTrue(message = "Question pool too large", groups = ValidationStep2.class)
+    public boolean isValidQuestionPoolSize() {
+
+        return questionPoolSize <= questionService.totalQuestions(topicObj);
+    }
+
+    @AssertTrue(message = "Invalid score", groups = ValidationStep3.class)
     public boolean isValidScore() {
 
         int maxPossibleScore = questionPoolSize * diff_VersionService.fetchScore(difficulty, gameVersion).get().getScorePerQuest();
 
         // check if within valid range
-        return ((this.score >= 0) && (this.score <= maxPossibleScore));
+        return this.score <= maxPossibleScore;
+    }
+
+    public Topic getTopicObj() {
+        return topicObj;
+    }
+
+    public void setTopicObj(Topic topicObj) {
+        this.topicObj = topicObj;
     }
 
     public int getScore() {

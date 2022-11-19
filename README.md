@@ -1,8 +1,8 @@
 # QuizGame
 
-This is a Spring Boot Java web application.
+This is a Spring Boot Java web application[^1].
 The backend is based on a SQL embedded DBMS (Apache Derby) managed through Spring Data JPA and Hibernate ORM.
-The frontend scripts are transpiled in Javascript from the original source in Dart[^1].
+The frontend scripts are written in JavaScript and make use of the Fetch API and async/await syntax.
 The structure and presentation layers are written in pure HTML5 and CSS3.
 The application is made responsive through the use of CSS media query and breakpoints.
 
@@ -10,7 +10,7 @@ Some external resources are embedded to improve the presentation and functionali
 
 Data sent to the Database is validated in order to guarantee data integrity and prevent SQL Injection.
 
-[^1]: Currently transitioning the frontend from Dart to native JS
+[^1]: The application is served on port 3000
 
 ## MANUAL
 

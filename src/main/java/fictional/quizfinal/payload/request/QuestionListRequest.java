@@ -1,34 +1,48 @@
 package fictional.quizfinal.payload.request;
 
 import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import fictional.quizfinal.entity.Topic;
+import fictional.quizfinal.service.QuestionService;
 import fictional.quizfinal.service.TopicService;
+import fictional.quizfinal.utility.validation.ValidationStep1;
+import fictional.quizfinal.utility.validation.ValidationStep2;
 
 @Configurable (dependencyCheck=true)
 public class QuestionListRequest {
 
     @Autowired TopicService topicService;
+    @Autowired QuestionService questionService;
 
     @JsonIgnore
-    public static final int QUESTION_MAX_POOL_SIZE = 35;
+    private Topic topicObj;
 
-    private int topic;
+    @NotNull
+    private Integer topic;
+    @NotNull
     @Min(value = 1, message = "limit must be strictly greater than 0")
-    @Max(value = QUESTION_MAX_POOL_SIZE, message = "limit must be less than " + QUESTION_MAX_POOL_SIZE)
-    private int limit;
-    private boolean random;
+    private Integer limit;
+    @NotNull
+    private Boolean random;
 
-    @AssertTrue(message = "Invalid Topic")
+    @AssertTrue(message = "Invalid Topic", groups = ValidationStep1.class)
     public boolean isValidTopic() {
 
-        return topicService.isValidTopic(topic);
+        topicObj = topicService.fetchTopic(topic).orElse(null);
+        return topicObj != null;
+    }
+
+    @AssertTrue(message = "Question pool too large", groups = ValidationStep2.class)
+    public boolean isValidLimit() {
+
+        return limit <= questionService.totalQuestions(topicObj);
     }
 
     public QuestionListRequest(int topic, int limit, boolean random) {
@@ -39,6 +53,14 @@ public class QuestionListRequest {
     }
 
     public QuestionListRequest() {
+    }
+
+    public Topic getTopicObj() {
+        return topicObj;
+    }
+
+    public void setTopicObj(Topic topicObj) {
+        this.topicObj = topicObj;
     }
 
     public int getTopic() {

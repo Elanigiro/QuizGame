@@ -13,13 +13,8 @@ public class UserRequest {
 
     @NotBlank(message = "missing username")
     @Size(max = USERNAME_MAX_LEN, message = "username '${validatedValue}' exceeds max length ({max})")
-    @Pattern(regexp = "[^\\s]+", message = "username '${validatedValue}' contains whitespaces")
+    @Pattern(regexp = "[^\\s]*", message = "username '${validatedValue}' contains whitespaces")
     private String username;
-
-    public UserRequest(
-            @NotBlank(message = "missing username") @Size(max = 12, message = "username '${validatedValue}' exceeds max length ({max})") @Pattern(regexp = "[^\\s]+", message = "username '${validatedValue}' contains whitespaces") String username) {
-        this.username = username;
-    }
 
     public UserRequest() {
     }

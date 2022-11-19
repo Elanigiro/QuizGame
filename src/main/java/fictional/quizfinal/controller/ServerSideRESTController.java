@@ -62,12 +62,12 @@ public class ServerSideRESTController {
 
     // Sends question list and game version as JSON
     @GetMapping(path = "/quiz/questions/topic/{topic}", params = {"limit", "random"}) 
-    public ResponseEntity<QuestionListResponse> getQuestionList(@Valid QuestionListRequest qlr) {
+    public ResponseEntity<QuestionListResponse> getQuestionList(@Validated(ValidationOrder.class) QuestionListRequest qlr) {
 
         QuestionListResponse res = new QuestionListResponse();
 
         // fetch the question ids (random or not)
-        res.setQuestionCodes(questionService.fetchQuestionCodes(topicService.fetchTopic(qlr.getTopic()).get(), qlr.getLimit(), qlr.isRandom()));
+        res.setQuestionCodes(questionService.fetchQuestionCodes(qlr.getTopicObj(), qlr.getLimit(), qlr.isRandom()));
         // current game version
         res.setGameVersion(gameVersionService.fetchLatestVersionId().get());
 
@@ -80,7 +80,12 @@ public class ServerSideRESTController {
     @GetMapping("/quiz/questions/{questId}")
     public ResponseEntity<Question> getQuestion(@Valid QuestionRequest qr) {
 
-        Question res = questionService.fetchQuestion(qr.getQuestId()).get();
+        Question res = questionService.fetchQuestion(qr.getQuestId()).orElse(null);
+
+        if (res == null) {
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         return new ResponseEntity<Question>(res, HttpStatus.OK);
     }
@@ -89,9 +94,7 @@ public class ServerSideRESTController {
     @GetMapping("/quiz/scores/{version}/{difficulty}")
     public ResponseEntity<DiffVersion> getDiffVersionScore(@Validated(ValidationOrder.class) ScoreRequest sr) {
 
-        DiffVersion res = diff_VersionService.fetchScore(sr.getDifficulty(), sr.getVersion()).get();
-
-        return new ResponseEntity<DiffVersion>(res, HttpStatus.OK);
+        return new ResponseEntity<DiffVersion>(sr.getScoreObject(), HttpStatus.OK);
     }
 
     // Sends user as JSON if found
@@ -110,7 +113,7 @@ public class ServerSideRESTController {
 
     // Saves the quiz result into the DB if validated
     @PostMapping("/users/{userId}/scores")
-    public ResponseEntity<Integer> postResult(@Valid UserIdRequest uir, @Validated(ValidationOrder.class) @RequestBody UserResultRequest req) {
+    public ResponseEntity<Integer> postResult(@Validated(ValidationOrder.class) UserIdRequest uir, @Validated(ValidationOrder.class) @RequestBody UserResultRequest req) {
 
         UserScore us = new UserScore();
 
@@ -121,7 +124,7 @@ public class ServerSideRESTController {
         us.setDifficulty(difficultyService.fetchDifficulty(req.getDifficulty()).get());
         us.setTotalScore(req.getScore());
         us.setGameVersion(gameVersionService.fetchGameVersion(req.getGameVersion()).get());
-        us.setTopic(topicService.fetchTopic(req.getTopic()).get());
+        us.setTopic(req.getTopicObj());
         
         int newId = userScoreService.saveUserScore(us).getIdRow();
 
@@ -143,13 +146,6 @@ public class ServerSideRESTController {
         return new ResponseEntity<Integer>(newId, HttpStatus.CREATED);
     }
 
-    // Sends the leaderboard as JSON
-    @GetMapping(path = "/users")
-    public ResponseEntity<String> getLed() {
-
-        return new ResponseEntity<>("ciaone", HttpStatus.OK);
-    }
-
     // Sends the leaderboard as JSON - note the value of the "leaderboard" parameter is actually meaningless
     @GetMapping(path = "/users", params = {"leaderboard"})
     public ResponseEntity<List<ILeaderboardEntry>> getLeaderboard() {
@@ -160,8 +156,6 @@ public class ServerSideRESTController {
         responseHeaders.set("Vary", "*"); // uncacheable resource
         return new ResponseEntity<List<ILeaderboardEntry>>(res, responseHeaders, HttpStatus.OK);
     }
-
-
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
