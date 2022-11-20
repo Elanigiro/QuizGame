@@ -129,8 +129,8 @@ public class UserScore {
 
     @Override
     public String toString() {
-        return "UserScore [difficulty=" + difficulty + ", gameVersion=" + gameVersion + ", idRow=" + idRow
-                + ", quizuser=" + quizuser + ", scoreTimestamp=" + scoreTimestamp + ", topic=" + topic
+        return "UserScore [difficulty=" + difficulty.getDiff() + ", gameVersion=" + gameVersion.getIdVersion() + ", idRow=" + idRow
+                + ", quizuser=" + quizuser.getNickname() + ", scoreTimestamp=" + scoreTimestamp + ", topic=" + topic.getTopic()
                 + ", totalScore=" + totalScore + "]";
     }
 

@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -135,13 +136,23 @@ public class ServerSideRESTController {
 
     // Saves a new user into the DB
     @PostMapping("/users")
-    public ResponseEntity<Integer> postUser(@Valid @RequestBody UserRequest usr) {
+    public ResponseEntity<?> postUser(@Valid @RequestBody UserRequest usr) {
 
         QuizUser newUser = new QuizUser();
         newUser.setFirstLoginDate(Timestamp.from(Instant.now()));
         newUser.setNickname(usr.getUsername());
 
-        int newId = quizUserService.saveUser(newUser).getIdUser();
+        Integer newId = null;
+        try {
+
+            newId = quizUserService.saveUser(newUser).getIdUser();
+            
+        } catch (DataIntegrityViolationException e) {
+            
+            return new ResponseEntity<String>("Duplicate User", HttpStatus.BAD_REQUEST);
+        }    
+        
+        Logging.logDebug(newUser.toString(), QuizUser.class.getName());
 
         return new ResponseEntity<Integer>(newId, HttpStatus.CREATED);
     }

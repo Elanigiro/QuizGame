@@ -1,6 +1,6 @@
 
 INSERT INTO Difficulty(id_diff, diff) 
-VALUES (1, 'Facile'), (2, 'Media'), (3, 'Difficile');
+VALUES (1, 'Easy'), (2, 'Medium'), (3, 'Hard');
 
 INSERT INTO gameversion(launch_date) 
 VALUES (CURRENT_TIMESTAMP);
@@ -9,7 +9,7 @@ INSERT INTO diffversion(id_diff, id_version, score_per_quest)
 VALUES (1, 1, 100), (2, 1, 150), (3, 1, 200);
 
 INSERT INTO Topic(id_topic, topic) 
-VALUES (1, 'citazioni storiche'), (2, 'citazioni cinematografiche'), (3, 'citazioni latine');
+VALUES (1, 'History'), (2, 'Movies'), (3, 'Latin');
 
 INSERT INTO Question(id_quest, topic, question, source) 
 VALUES (1, 1, 'Il tempo', 'Albert Einstein'), 	(2, 1, 'E pur', 'Galileo Galilei'), 					(3, 1, 'Siate affamati', 'Steve Jobs'), 	(4, 1, 'Sii il cambiamento', 'Mahatma Gandhi'), 				(5, 1, 'Tutti i sogni possono diventare realta`', 'Walt Disney'), 	(6, 1, 'Un piccolo passo per un uomo', 'Neil Armstrong'), 	(7, 1, 'La moda', 'Coco Chanel'), 					(8, 1, 'La miglior Ferrari che sia mai stata costruita', 'Enzo Ferrari'), 	(9, 1, 'La religione e`', 'Karl Marx'), 			(10, 1, 'Il fine', 'Niccolo` Machiavelli'),  (11, 1, 'La nazione che distrugge il suo suolo', 'Franklin Delano Roosevelt'), (12, 1, 'Qui si fa l''Italia', 'Giuseppe Garibaldi'), (13, 1, 'Prendete in mano la vostra vita', 'Papa Giovanni Paolo II'), (14, 1, 'Un''ingiustizia commessa in un solo luogo', 'Martin Luther King'), (15, 1, 'E` meglio morire in piedi', 'Emiliano Zapata');

@@ -132,7 +132,7 @@ export class QuizManager {
         QuizUtils.clearAnswers();
         
         this.getNextQuestion()
-        .then(() => {QuizUtils.displayQuestion(this.idx, this.currentQuestion);})
+        .then(() => {QuizUtils.displayQuestion(this.idx, this.currentQuestion, this.difficulty);})
         .then(() => {QuizUtils.enableQuiz((e) => {this.clickedAnswer(e);})})
         .catch((error) => {console.error(error);});
     }

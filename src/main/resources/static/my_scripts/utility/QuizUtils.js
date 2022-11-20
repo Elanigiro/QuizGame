@@ -157,12 +157,15 @@ class QuizUtils {
 
     this.arrayShuffle(answers);
 
-    for (let i = 0; (i < answers.length) && (answers.length > howMany); i++) {
+    for (let i = 0; (i < answers.length) && (answers.length > howMany);) {
       
       if (answers[i].correct === false) {
 
         answers.splice(i, 1);
+        continue;
       }
+      
+      ++i;
     }
 
     this.arrayShuffle(answers);
